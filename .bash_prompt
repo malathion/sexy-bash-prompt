@@ -63,19 +63,7 @@ if [[ -n "$PROMPT_GIT_STATUS_COLOR" ]]; then prompt_git_status_color="$PROMPT_GI
 if [[ -n "$PROMPT_SYMBOL_COLOR" ]]; then prompt_symbol_color="$PROMPT_SYMBOL_COLOR"; fi
 
 get_git_dir () {
-  git_check_dir="$PWD"
-  while (true); do
-    if [[ -d "$git_check_dir/.git/" ]]; then
-      echo "$git_check_dir/.git/"
-      return
-    fi
-
-    if [[ "$git_check_dir" = "/" ]]; then
-      return
-    fi
-
-    git_check_dir="$(dirname $git_check_dir)"
-  done
+  echo "$(git rev-parse --show-toplevel)$(git rev-parse --git-dir)"
 }
 
 function get_git_branch() {
