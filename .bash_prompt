@@ -3,6 +3,8 @@
 # https://github.com/twolfson/sexy-bash-prompt
 # Forked from gf3, https://gist.github.com/gf3/306785
 
+# https://stackoverflow.com/questions/2657935/checking-for-a-dirty-index-or-untracked-files-with-git
+
 # If we are on a colored terminal
 if tput setaf 1 &> /dev/null; then
   # Reset the shell from our `if` check
@@ -69,6 +71,7 @@ if [[ -n "$PROMPT_SYMBOL_COLOR" ]]; then prompt_symbol_color="$PROMPT_SYMBOL_COL
 function get_git_branch() {
   # On branches, this will return the branch name
   # On non-branches, (no branch)
+  # ref="$(git symbolic-ref HEAD 2> /dev/null | cut -d '/' -f 3)"
   ref="$(git symbolic-ref HEAD 2> /dev/null | sed -e 's/refs\/heads\///')"
   if [[ "$ref" != "" ]]; then
     echo "$ref"
@@ -172,6 +175,7 @@ parse_git_behind () {
 
 function parse_git_dirty() {
   # If the git status has *any* changes (e.g. dirty), echo our character
+  # if [[ -n "$(git diff-index --quiet HEAD)" ]]; then
   if [[ -n "$(git status --porcelain 2> /dev/null)" ]]; then
     echo 1
   fi
