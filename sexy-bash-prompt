@@ -233,14 +233,36 @@ function get_prompt_symbol() {
 }
 
 # Define the sexy-bash-prompt
-PS1="\[$prompt_user_color\]\u\[$prompt_reset\] \
-\[$prompt_preposition_color\]at\[$prompt_reset\] \
-\[$prompt_device_color\]\h\[$prompt_reset\] \
-\[$prompt_preposition_color\]in\[$prompt_reset\] \
-\[$prompt_dir_color\]\w\[$prompt_reset\]\
-\$( is_on_git && \
-  echo -n \" \[$prompt_preposition_color\]on\[$prompt_reset\] \" && \
-  echo -n \"\[$prompt_git_status_color\]\$(get_git_info)\" && \
-  echo -n \"\[$prompt_git_progress_color\]\$(get_git_progress)\" && \
-  echo -n \"\[$prompt_preposition_color\]\")\n\[$prompt_reset\]\
-\[$prompt_symbol_color\]$(get_prompt_symbol) \[$prompt_reset\]"
+sexy_bash_prompt() {
+  promptsymbol="$(get_prompt_symbol)"
+
+  printf "%b" "$prompt_reset"
+# Username
+  printf "%b%s " "$prompt_user_color" "$USER"
+  printf "%b" "$prompt_reset"
+# Preposition
+  printf "%bat " "$prompt_preposition_color"
+# Hosname
+  printf "%b%s " "$prompt_device_color" "$HOSTNAME"
+  printf "%b" "$prompt_reset"
+# Preposition
+  printf "%bin " "$prompt_preposition_color"
+# PWD
+  printf "%b%s " "$prompt_dir_color" "$PWD"
+  printf "%b" "$prompt_reset"
+# Git status
+  if is_on_git; then
+    printf "%bon " "$prompt_preposition_color"
+    printf "%b%s " "$prompt_git_status_color" "$(get_git_info)"
+    printf "%b%s " "$prompt_git_progress_color" "$(get_git_progress)"
+    printf "%b" "$prompt_reset"
+  fi
+# Newline
+  printf '\n'
+# Symbol
+  PS1="$(printf "%b%s " "$prompt_symbol_color" "$promptsymbol"; printf "%b" "$prompt_reset")"
+}
+
+unset PS1
+
+PROMPT_COMMAND="sexy_bash_prompt"
