@@ -257,8 +257,23 @@ function sexy_bash_prompt_get_prompt_symbol() {
   fi
 }
 
+# Store the exit code
+function sexy_bash_prompt_get_exit_code() {
+  exit_code="$?"
+}
+
+# Print a symbol corresponding to the exit code
+function sexy_bash_prompt_print_exit_symbol() {
+  # If it exited zero, smile. Otherwise, frown.
+  if [[ "$exit_code" = '0' ]]; then
+    echo -n " :)"
+  else
+    echo -n " :|"
+  fi
+}
+
 # Define the sexy-bash-prompt
-PS1="\[$sexy_bash_prompt_user_color\]\u\[$sexy_bash_prompt_reset\] \
+PS1="\$(sexy_bash_prompt_get_exit_code)\[$sexy_bash_prompt_user_color\]\u\[$sexy_bash_prompt_reset\] \
 \[$sexy_bash_prompt_preposition_color\]at\[$sexy_bash_prompt_reset\] \
 \[$sexy_bash_prompt_device_color\]\h\[$sexy_bash_prompt_reset\] \
 \[$sexy_bash_prompt_preposition_color\]in\[$sexy_bash_prompt_reset\] \
@@ -267,5 +282,5 @@ PS1="\[$sexy_bash_prompt_user_color\]\u\[$sexy_bash_prompt_reset\] \
   echo -n \" \[$sexy_bash_prompt_preposition_color\]on\[$sexy_bash_prompt_reset\] \" && \
   echo -n \"\[$sexy_bash_prompt_git_status_color\]\$(sexy_bash_prompt_get_git_info)\" && \
   echo -n \"\[$sexy_bash_prompt_git_progress_color\]\$(sexy_bash_prompt_get_git_progress)\" && \
-  echo -n \"\[$sexy_bash_prompt_preposition_color\]\")\n\[$sexy_bash_prompt_reset\]\
+  echo -n \"\[$sexy_bash_prompt_preposition_color\]\")\$(sexy_bash_prompt_print_exit_symbol)\n\[$sexy_bash_prompt_reset\]\
 \[$sexy_bash_prompt_symbol_color\]$(sexy_bash_prompt_get_prompt_symbol) \[$sexy_bash_prompt_reset\]"
