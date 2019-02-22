@@ -264,7 +264,7 @@ sexy_bash_prompt_stopped_jobs() {
   read -r jobs_count < <(jobs -s | wc -l)
 
   if [[ "$jobs_count" -gt 0 ]] ; then
-    echo " ${sexy_bash_prompt_stopped_jobs_color}${sexy_bash_prompt_stopped_jobs_symbol}$jobs_count "
+    echo " ${sexy_bash_prompt_stopped_jobs_symbol}$jobs_count "
   fi
 }
 
@@ -279,7 +279,7 @@ PS1="\[$sexy_bash_prompt_reset\]\
   echo -n \" \[$sexy_bash_prompt_preposition_color\]on\[$sexy_bash_prompt_reset\] \" && \
   echo -n \"\[$sexy_bash_prompt_git_status_color\]\$(sexy_bash_prompt_get_git_info)\" && \
   echo -n \"\[$sexy_bash_prompt_git_progress_color\]\$(sexy_bash_prompt_get_git_progress)\" && \
-  echo -n \"\[$sexy_bash_prompt_preposition_color\]\$(sexy_bash_prompt_stopped_jobs)\"
+  echo -n \"\[${sexy_bash_prompt_stopped_jobs_color}\]\$(sexy_bash_prompt_stopped_jobs)\"
   echo -n \"\[$sexy_bash_prompt_reset\]\")\n\
 \[$sexy_bash_prompt_symbol_color\]$sexy_bash_prompt_symbol \
 \[\[$sexy_bash_prompt_reset\]"
